@@ -5,7 +5,7 @@ class ControllerPaymentQuikWallet extends Controller
     public function index()
     {
 
-        $this->log->debug("index called controller quikwallet");
+        //$this->log->debug("index called controller quikwallet");
 
 
         $data['button_confirm'] = $this->language->get('button_confirm');
@@ -74,11 +74,11 @@ class ControllerPaymentQuikWallet extends Controller
     {
       $this->load->model('checkout/order');
 
-      $this->log->debug("callback called controller quikwallet ");
+      //$this->log->debug("callback called controller quikwallet ");
 
-      $this->log->debug($this->request->request);
+      //$this->log->debug($this->request->request);
 
-      $this->log->debug("config log " , $this->config->get("quikwallet_partnerid"));
+      //$this->log->debug("config log " , $this->config->get("quikwallet_partnerid"));
 
       //if form is submit through quikwallet form on front end
       if (isset($this->request->request["quikwalletsubmit"])) {
@@ -162,7 +162,7 @@ class ControllerPaymentQuikWallet extends Controller
             '$amount',
             '','','','') ";
 
-          $this->log->debug("MYSQL QUERY" , $sql);
+          //$this->log->debug("MYSQL QUERY" , $sql);
 
           $this->db->query($sql);
 
@@ -178,14 +178,14 @@ class ControllerPaymentQuikWallet extends Controller
           );
 
 
-          $this->log->debug("Post fields are " , $postFields);
+          //$this->log->debug("Post fields are " , $postFields);
           // AJAX call starts
           // Building post data
           $postFields = http_build_query($postFields);
 
-          $this->log->debug("POST url is  " , $url);
+          //$this->log->debug("POST url is  " , $url);
 
-          $this->log->debug(" POST postfields build query are " , $postFields);
+          //$this->log->debug(" POST postfields build query are " , $postFields);
 
 
           //cURL Request
@@ -209,14 +209,14 @@ class ControllerPaymentQuikWallet extends Controller
 
           $info = curl_getinfo($ch);
 
-          $this->log->debug("FULL CH IS ",$info);
+          //$this->log->debug("FULL CH IS ",$info);
 
 
           $this->response = curl_exec($ch);
 
           $info = curl_getinfo($ch);
 
-          $this->log->debug("FULL CH IS ",$info);
+          //$this->log->debug("FULL CH IS ",$info);
 
           if ($this->response === false) {
             $this->response = curl_error($ch);
@@ -225,7 +225,7 @@ class ControllerPaymentQuikWallet extends Controller
           // Fetching response
           $resp = $this->response;
 
-          $this->log->debug("Response was " , $resp);
+          //$this->log->debug("Response was " , $resp);
 
 
           // Decode
@@ -242,7 +242,7 @@ class ControllerPaymentQuikWallet extends Controller
               $newurl = $r['data']['url'];
 
 
-              $this->log->debug("JSON RESPONSE --> ",$r['data']);
+              //$this->log->debug("JSON RESPONSE --> ",$r['data']);
 
               $id2 = substr($id, 2);
 
@@ -254,7 +254,7 @@ class ControllerPaymentQuikWallet extends Controller
               $sql = "UPDATE `$table`  SET `q_id` = '$escape_q_id' , `hash` = '$escape_hash' WHERE
                 `order_no` = '$orderid' ";
 
-              $this->log->debug("MYSQL UPDATE QUERY" , $sql);
+              //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
 
               $this->db->query($sql);
 
@@ -297,7 +297,7 @@ class ControllerPaymentQuikWallet extends Controller
 
           $order_info = $this->model_checkout_order->getOrder($order_id);
 
-          $this->log->debug("logging order ", $order_info);
+          //$this->log->debug("logging order ", $order_info);
 
 
           if ($hmac == $checksum) {
@@ -311,20 +311,20 @@ class ControllerPaymentQuikWallet extends Controller
               $sql = "UPDATE `$table`  SET `order_status` = '$escape_order_status' , `checksum` = '$escape_checksum' WHERE
                 `q_id` = '$escape_q_id' ";
 
-              $this->log->debug("MYSQL UPDATE QUERY" , $sql);
+              //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
 
               $this->db->query($sql);
 
               $order_info = $this->model_checkout_order->getOrder($order_id);
 
-              $this->log->debug("logging order ", $order_info);
+              //$this->log->debug("logging order ", $order_info);
 
               if ($order_id != '') {
                   try {
 
                       if ($order_info['order_status_id'] !== 5) { // completed
 
-                        $this->log->debug("logging order  status here", $order_info['order_status_id']);
+                        //$this->log->debug("logging order  status here", $order_info['order_status_id']);
 
                           $status = strtolower($status);
                           if ($status == "paid") {

@@ -184,7 +184,7 @@ class ControllerPaymentQuikWallet extends Controller
 
     public function install() {
 
-      $this->log->debug("in install function of quikwallet admin controller");
+      //$this->log->debug("in install function of quikwallet admin controller");
 
 
       $table = DB_PREFIX . 'quik_pay';

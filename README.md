@@ -21,6 +21,7 @@ Configuration
 Example 
 
 url -  https://uat.quikpay.in/api/partner //API domain specified by QuikWallet for Test/Production
+
 partnerid - 75 //Unique id allotted to each merchant
 
 secret -  gA73CzmjhlqfGsJxP7s811ZVmnl70Jky  //256-bit key that to be stored securely

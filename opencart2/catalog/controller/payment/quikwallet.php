@@ -331,10 +331,10 @@ class ControllerPaymentQuikWallet extends Controller
 
                               if ($order_info['order_status_id'] == 2) {  // Processing
                                   // pending
-                                  $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction Processing. QuikWallet ID: ' . $id);
+                                  $this->model_checkout_order->addOrderHistory($order_id,2, 'Transaction Processing. QuikWallet ID: ' . $id);
                               } else {
                                   // success
-                                  $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('quikwallet_order_status_id'), 'QuikWallet payment successful.<br/>QuikWallet ID: ' . $id);
+                                  $this->model_checkout_order->addOrderHistory($order_id, 15, 'QuikWallet payment successful.<br/>QuikWallet ID: ' . $id);
 
 
                                   echo '<html>'."\n";
@@ -350,7 +350,7 @@ class ControllerPaymentQuikWallet extends Controller
                               }
                           } else {
                               // failure
-                              $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction ERROR.<br/>QuikWallet ID: ' . $id);
+                              $this->model_checkout_order->addOrderHistory($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id);
                               echo '<html>'."\n";
                               echo '<head>'."\n";
                               echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/failure').'">'."\n";
@@ -366,7 +366,7 @@ class ControllerPaymentQuikWallet extends Controller
                   catch (Exception $e) {
                       // $errorOccurred = true;
                       // failure
-                      $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction ERROR.<br/>QuikWallet ID: ' . $id);
+                      $this->model_checkout_order->addOrderHistory($order_id, 10 , 'Transaction ERROR.<br/>QuikWallet ID: ' . $id);
                       echo '<html>'."\n";
                       echo '<head>'."\n";
                       echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/failure').'">'."\n";

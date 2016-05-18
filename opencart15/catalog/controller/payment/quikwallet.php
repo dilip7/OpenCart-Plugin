@@ -340,10 +340,10 @@ class ControllerPaymentQuikWallet extends Controller
 
                               if ($order_info['order_status_id'] == 2) {  // Processing
                                   // pending
-                                  $this->model_checkout_order->confirm($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction Processing. QuikWallet ID: '.$id, true);
+                                  $this->model_checkout_order->confirm($order_id, 2, 'Transaction Processing. QuikWallet ID: '.$id, true);
                               } else {
                                   // success
-                                  $this->model_checkout_order->confirm($order_id, $this->config->get('quikwallet_order_status_id'), 'Payment Successful. QuikWallet Payment Id:'.$id, true);
+                                  $this->model_checkout_order->confirm($order_id, 15, 'Payment Successful. QuikWallet Payment Id:'.$id, true);
 
                                   echo '<html>'."\n";
                                   echo '<head>'."\n";
@@ -358,7 +358,7 @@ class ControllerPaymentQuikWallet extends Controller
                               }
                           } else {
                               // failure
-                              $this->model_checkout_order->confirm($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
+                              $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
 
                               echo '<html>'."\n";
                               echo '<head>'."\n";
@@ -375,7 +375,7 @@ class ControllerPaymentQuikWallet extends Controller
                   catch (Exception $e) {
                       // $errorOccurred = true;
                       // failure
-                      $this->model_checkout_order->confirm($order_id, $this->config->get('quikwallet_order_status_id'), 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
+                      $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
 
                       echo '<html>'."\n";
                       echo '<head>'."\n";

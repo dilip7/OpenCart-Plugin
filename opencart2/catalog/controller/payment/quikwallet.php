@@ -22,7 +22,7 @@ class ControllerPaymentQuikWallet extends Controller
         $quikwallet_args = array(
           'amount' => $order_info['total'],
           'firstname' => $order_info['payment_firstname'],
-          'email' =>  $order_info['email'],
+          'quik_email' =>  $order_info['email'],
           'phone' => $order_info['telephone'],
           'productinfo' => $productinfo ,
           'lastname' => $order_info['payment_lastname'],
@@ -40,7 +40,7 @@ class ControllerPaymentQuikWallet extends Controller
         $quikwallet_args_array = array();
         foreach ($quikwallet_args as $key => $value) {
           if (in_array($key, array(
-            'email',
+            'quik_email',
             'phone'
           ))) {
             $quikwallet_args_array[] = "<input name='$key' value='$value'/>";
@@ -106,7 +106,7 @@ class ControllerPaymentQuikWallet extends Controller
           $mobile  = $this->request->request["phone"];
           $amount  = $this->request->request["amount"];
           $name    = $this->request->request["firstname"];
-          $email   = $this->request->request["email"];
+          $email   = $this->request->request["quik_email"];
           $address = $this->request->request["address1"] . ", " . $this->request->request["address2"];
           $city    = $this->request->request["city"];
           $pincode = $this->request->request["zipcode"];

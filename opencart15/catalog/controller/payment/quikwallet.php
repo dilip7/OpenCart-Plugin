@@ -25,33 +25,33 @@ class ControllerPaymentQuikWallet extends Controller
         $service_provider = 'quikwallet';
 
         $quikwallet_args = array(
-          'amount' => $order_info['total'],
-          'firstname' => $order_info['payment_firstname'],
-          'email' =>  $order_info['email'],
-          'phone' => $order_info['telephone'],
-          'productinfo' => $productinfo ,
-          'lastname' => $order_info['payment_lastname'],
-          'address1' => $order_info['payment_address_1'],
-          'address2' => $order_info['payment_address_2'],
-          'city' => $order_info['payment_city'],
-          'state' => $order_info['payment_city'],
-          'country' => $order_info['payment_country'],
-          'zipcode' => $order_info['payment_postcode'],
-          'order_id' => $this->session->data['order_id'],
-          'service_provider' => $service_provider
+            'amount' => $order_info['total'],
+            'firstname' => $order_info['payment_firstname'],
+            'quik_email' =>  $order_info['email'],
+            'phone' => $order_info['telephone'],
+            'productinfo' => $productinfo ,
+            'lastname' => $order_info['payment_lastname'],
+            'address1' => $order_info['payment_address_1'],
+            'address2' => $order_info['payment_address_2'],
+            'city' => $order_info['payment_city'],
+            'state' => $order_info['payment_city'],
+            'country' => $order_info['payment_country'],
+            'zipcode' => $order_info['payment_postcode'],
+            'order_id' => $this->session->data['order_id'],
+            'service_provider' => $service_provider
         );
 
 
         $quikwallet_args_array = array();
         foreach ($quikwallet_args as $key => $value) {
-          if (in_array($key, array(
-            'email',
-            'phone'
-          ))) {
-            $quikwallet_args_array[] = "<input name='$key' value='$value'/>";
-          } else {
-            $quikwallet_args_array[] = "<input type='hidden' name='$key' value='$value'/>";
-          }
+            if (in_array($key, array(
+                'quik_email',
+                'phone'
+            ))) {
+                $quikwallet_args_array[] = "<input name='$key' value='$value'/>";
+            } else {
+                $quikwallet_args_array[] = "<input type='hidden' name='$key' value='$value'/>";
+            }
         }
 
         $this->data['inputs_array'] = implode('', $quikwallet_args_array);
@@ -79,52 +79,52 @@ class ControllerPaymentQuikWallet extends Controller
 
     public function callback()
     {
-      $request_params = array_merge($_GET, $_POST);
+        $request_params = array_merge($_GET, $_POST);
 
-      $this->load->model('checkout/order');
+        $this->load->model('checkout/order');
 
-      //$this->log->debug("callback called controller quikwallet ");
+        //$this->log->debug("callback called controller quikwallet ");
 
-      //$this->log->debug($this->request->request);
+        //$this->log->debug($this->request->request);
 
-      //$this->log->debug("config log " , $this->config->get("quikwallet_partnerid"));
+        //$this->log->debug("config log " , $this->config->get("quikwallet_partnerid"));
 
-      //if form is submit through quikwallet form on front end
-      if (isset($request_params["quikwalletsubmit"])) {
-          global $wpdb;
+        //if form is submit through quikwallet form on front end
+        if (isset($request_params["quikwalletsubmit"])) {
+            global $wpdb;
 
-          $table = DB_PREFIX . 'quik_pay';
+            $table = DB_PREFIX . 'quik_pay';
 
-          // Getting data to build url
-          $partnerid = $this->config->get("quikwallet_partnerid");
+            // Getting data to build url
+            $partnerid = $this->config->get("quikwallet_partnerid");
 
-          // Url to call
-          $url       = $this->config->get("quikwallet_url") . "/" .$partnerid . "/requestpayment";
-          $secret    = $this->config->get("quikwallet_secret");
-          //$partnerurl = $this->settings['partnerurl'];
+            // Url to call
+            $url       = $this->config->get("quikwallet_url") . "/" .$partnerid . "/requestpayment";
+            $secret    = $this->config->get("quikwallet_secret");
+            //$partnerurl = $this->settings['partnerurl'];
 
-          /*
-           * force partnerurl to checkout url. Currently payment response only working on view
-           * cart page
-           */
+            /*
+             * force partnerurl to checkout url. Currently payment response only working on view
+             * cart page
+             */
 
-          //$partnerurl = $woocommerce->cart->get_cart_url();
+            //$partnerurl = $woocommerce->cart->get_cart_url();
 
-          //$partnerurl = site_url();
+            //$partnerurl = site_url();
 
-          $mobile  = $request_params["phone"];
-          $amount  = $request_params["amount"];
-          $name    = $request_params["firstname"];
-          $email   = $request_params["email"];
-          $address = $request_params["address1"] . ", " . $request_params["address2"];
-          $city    = $request_params["city"];
-          $pincode = $request_params["zipcode"];
-          $orderid = $request_params["order_id"];
-          $date_c  = date('Y-m-d H:i');
+            $mobile  = $request_params["phone"];
+            $amount  = $request_params["amount"];
+            $name    = $request_params["firstname"];
+            $email   = $request_params["quik_email"];
+            $address = $request_params["address1"] . ", " . $request_params["address2"];
+            $city    = $request_params["city"];
+            $pincode = $request_params["zipcode"];
+            $orderid = $request_params["order_id"];
+            $date_c  = date('Y-m-d H:i');
 
-          $this->session->data['order_id'] = $orderid;
+            $this->session->data['order_id'] = $orderid;
 
-          $partnerurl = $this->url->link('payment/quikwallet/callback');
+            $partnerurl = $this->url->link('payment/quikwallet/callback');
 
           /*
           try {
@@ -134,273 +134,273 @@ class ControllerPaymentQuikWallet extends Controller
           catch (Exception $e) {
               $msg = "Error";
           }
-          */
-
-          /*
-           * Record order details
-           *
            */
 
-          $escape_email =  $this->db->escape($email);
-          $escape_date = $this->db->escape($date_c);
-          $escape_address = $this->db->escape($address);
+            /*
+             * Record order details
+             *
+             */
 
-          $sql = "REPLACE INTO `$table` (
-            `order_no` ,
-            `date_c` ,
-            `name`,
-            `email_id`,
-            `address`,
-            `city` ,
-            `pincode` ,
-            `mobile`,
-            `amount` ,
-            `q_id`,
-            `hash`,
-            `checksum`,
-            `order_status`)
-            VALUES(
-            '$orderid',
-            '$escape_date',
-            '$name',
-            '$escape_email',
-            '$escape_address',
-            '$city',
-            '$pincode',
-            '$mobile',
-            '$amount',
-            '','','','') ";
+            $escape_email =  $this->db->escape($email);
+            $escape_date = $this->db->escape($date_c);
+            $escape_address = $this->db->escape($address);
 
-          //$this->log->debug("MYSQL QUERY" , $sql);
+            $sql = "REPLACE INTO `$table` (
+                `order_no` ,
+                `date_c` ,
+                `name`,
+                `email_id`,
+                `address`,
+                `city` ,
+                `pincode` ,
+                `mobile`,
+                `amount` ,
+                `q_id`,
+                `hash`,
+                `checksum`,
+                `order_status`)
+                VALUES(
+                    '$orderid',
+                    '$escape_date',
+                    '$name',
+                    '$escape_email',
+                    '$escape_address',
+                    '$city',
+                    '$pincode',
+                    '$mobile',
+                    '$amount',
+                    '','','','') ";
 
-          $this->db->query($sql);
+            //$this->log->debug("MYSQL QUERY" , $sql);
 
-          $postFields = Array(
-              "partnerid" => $partnerid, //fixed
-              "secret" => $secret, //fixed
-              //"outletid" => "39", //fixed - only for restaurant
-              "redirecturl" => "$partnerurl" . "", //fixed
-              "mobile" => $mobile, //client mobile no
-              "billnumbers" => $orderid, //unique order no in the system
-              "email" => $email, //unique order no in the system
-              "amount" => $amount //amount for the transaction
-          );
+            $this->db->query($sql);
 
+            $postFields = Array(
+                "partnerid" => $partnerid, //fixed
+                "secret" => $secret, //fixed
+                //"outletid" => "39", //fixed - only for restaurant
+                "redirecturl" => "$partnerurl" . "", //fixed
+                "mobile" => $mobile, //client mobile no
+                "billnumbers" => $orderid, //unique order no in the system
+                "email" => $email, //unique order no in the system
+                "amount" => $amount //amount for the transaction
+            );
 
-          //$this->log->debug("Post fields are " , $postFields);
-          // AJAX call starts
-          // Building post data
-          $postFields = http_build_query($postFields);
 
-          //$this->log->debug("POST url is  " , $url);
+            //$this->log->debug("Post fields are " , $postFields);
+            // AJAX call starts
+            // Building post data
+            $postFields = http_build_query($postFields);
 
-          //$this->log->debug(" POST postfields build query are " , $postFields);
+            //$this->log->debug("POST url is  " , $url);
 
+            //$this->log->debug(" POST postfields build query are " , $postFields);
 
-          //cURL Request
-          $ch = curl_init();
 
-          //set the url, number of POST vars, POST data
+            //cURL Request
+            $ch = curl_init();
 
-          // defaults setting
-          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-          curl_setopt($ch,CURLOPT_HEADER,false);
-          curl_setopt($ch,CURLOPT_ENCODING,'gzip,deflate');
-          curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
-          curl_setopt($ch,CURLOPT_TIMEOUT,30);
-          curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-          curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);
+            //set the url, number of POST vars, POST data
 
-          // contextual info apart from defaults
-          curl_setopt($ch, CURLOPT_URL, $url);
-          curl_setopt($ch, CURLOPT_POST, 1);
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+            // defaults setting
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch,CURLOPT_HEADER,false);
+            curl_setopt($ch,CURLOPT_ENCODING,'gzip,deflate');
+            curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
+            curl_setopt($ch,CURLOPT_TIMEOUT,30);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);
 
-          $info = curl_getinfo($ch);
+            // contextual info apart from defaults
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
-          //$this->log->debug("FULL CH IS ",$info);
+            $info = curl_getinfo($ch);
 
+            //$this->log->debug("FULL CH IS ",$info);
 
-          $this->response = curl_exec($ch);
 
-          $info = curl_getinfo($ch);
+            $this->response = curl_exec($ch);
 
-          //$this->log->debug("FULL CH IS ",$info);
+            $info = curl_getinfo($ch);
 
-          if ($this->response === false) {
-            $this->response = curl_error($ch);
-          }
+            //$this->log->debug("FULL CH IS ",$info);
 
-          // Fetching response
-          $resp = $this->response;
+            if ($this->response === false) {
+                $this->response = curl_error($ch);
+            }
 
-          //$this->log->debug("Response was " , $resp);
+            // Fetching response
+            $resp = $this->response;
 
+            //$this->log->debug("Response was " , $resp);
 
-          // Decode
-          $r = json_decode($resp, true);
 
+            // Decode
+            $r = json_decode($resp, true);
 
 
-          if ($r['status'] == 'failed') {
-              $message = $r['message'];
 
-          } else if ($r['status'] == 'success') {
-              $id     = $r['data']['id'];
-              $hash   = $r['data']['hash'];
-              $newurl = $r['data']['url'];
+            if ($r['status'] == 'failed') {
+                $message = $r['message'];
 
+            } else if ($r['status'] == 'success') {
+                $id     = $r['data']['id'];
+                $hash   = $r['data']['hash'];
+                $newurl = $r['data']['url'];
 
-              //$this->log->debug("JSON RESPONSE --> ",$r['data']);
 
-              $id2 = substr($id, 2);
+                //$this->log->debug("JSON RESPONSE --> ",$r['data']);
 
-              $escape_q_id =  $this->db->escape($id2);
-              $escape_hash =  $this->db->escape($hash);
+                $id2 = substr($id, 2);
 
-              // post API DB part
+                $escape_q_id =  $this->db->escape($id2);
+                $escape_hash =  $this->db->escape($hash);
 
-              $sql = "UPDATE `$table`  SET `q_id` = '$escape_q_id' , `hash` = '$escape_hash' WHERE
-                `order_no` = '$orderid' ";
+                // post API DB part
 
-              //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
+                $sql = "UPDATE `$table`  SET `q_id` = '$escape_q_id' , `hash` = '$escape_hash' WHERE
+                    `order_no` = '$orderid' ";
 
-              $this->db->query($sql);
+                //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
 
-              //$this->response->redirect($newurl);
+                $this->db->query($sql);
 
-              header("Location: " . $newurl);
+                //$this->response->redirect($newurl);
 
+                header("Location: " . $newurl);
 
-              // below redirecting to quikwallet payment gateway after updating q_id and hash
-              // e.g $newurl = https://app.quikpay.in/#paymentrequest/6uP0SoY
 
-              //header("Location: " . $newurl);
-          } else {
-              //print "Invalid Response";
-          }
+                // below redirecting to quikwallet payment gateway after updating q_id and hash
+                // e.g $newurl = https://app.quikpay.in/#paymentrequest/6uP0SoY
 
-          // Exit Strategy
-          exit();
+                //header("Location: " . $newurl);
+            } else {
+                //print "Invalid Response";
+            }
 
-      }
+            // Exit Strategy
+            exit();
 
-      /*
-       * After redirection from payment gateway to our site update quik_pay
-       */
+        }
 
-      if (isset($_GET['status']) && isset($_GET['id']) && isset($_GET['checksum'])) {
+        /*
+         * After redirection from payment gateway to our site update quik_pay
+         */
 
-          $table = DB_PREFIX . 'quik_pay';
+        if (isset($_GET['status']) && isset($_GET['id']) && isset($_GET['checksum'])) {
 
-          $status   = $_GET["status"];
-          $id       = $_GET["id"];
-          $checksum = $_GET["checksum"];
-          $order_id = $this->session->data['order_id'];
+            $table = DB_PREFIX . 'quik_pay';
 
-          $partnerid = $this->config->get("quikwallet_partnerid");
-          $secret    = $this->config->get("quikwallet_secret");
+            $status   = $_GET["status"];
+            $id       = $_GET["id"];
+            $checksum = $_GET["checksum"];
+            $order_id = $this->session->data['order_id'];
 
-          $text = "status=$status&id=$id&billnumbers=$order_id";
-          $hmac = hash_hmac('sha256', $text, $secret);
+            $partnerid = $this->config->get("quikwallet_partnerid");
+            $secret    = $this->config->get("quikwallet_secret");
 
-          $order_info = $this->model_checkout_order->getOrder($order_id);
+            $text = "status=$status&id=$id&billnumbers=$order_id";
+            $hmac = hash_hmac('sha256', $text, $secret);
 
-          //$this->log->debug("logging order ", $order_info);
+            $order_info = $this->model_checkout_order->getOrder($order_id);
 
+            //$this->log->debug("logging order ", $order_info);
 
-          if ($hmac == $checksum) {
 
-              $escape_order_status =  $this->db->escape($status);
-              $escape_checksum =  $this->db->escape($checksum);
-              $escape_q_id = $this->db->escape($id);
+            if ($hmac == $checksum) {
 
-              // post API DB part
+                $escape_order_status =  $this->db->escape($status);
+                $escape_checksum =  $this->db->escape($checksum);
+                $escape_q_id = $this->db->escape($id);
 
-              $sql = "UPDATE `$table`  SET `order_status` = '$escape_order_status' , `checksum` = '$escape_checksum' WHERE
-                `q_id` = '$escape_q_id' ";
+                // post API DB part
 
-              //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
+                $sql = "UPDATE `$table`  SET `order_status` = '$escape_order_status' , `checksum` = '$escape_checksum' WHERE
+                    `q_id` = '$escape_q_id' ";
 
-              $this->db->query($sql);
+                //$this->log->debug("MYSQL UPDATE QUERY" , $sql);
 
-              $order_info = $this->model_checkout_order->getOrder($order_id);
+                $this->db->query($sql);
 
-              //$this->log->debug("logging order ", $order_info);
+                $order_info = $this->model_checkout_order->getOrder($order_id);
 
-              if ($order_id != '') {
-                  try {
+                //$this->log->debug("logging order ", $order_info);
 
-                      if ($order_info['order_status_id'] !== 5) { // completed
+                if ($order_id != '') {
+                    try {
 
-                        //$this->log->debug("logging order  status here", $order_info['order_status_id']);
+                        if ($order_info['order_status_id'] !== 5) { // completed
 
-                          $status = strtolower($status);
-                          if ($status == "paid") {
+                            //$this->log->debug("logging order  status here", $order_info['order_status_id']);
 
-                              if ($order_info['order_status_id'] == 2) {  // Processing
-                                  // pending
-                                  $this->model_checkout_order->confirm($order_id, 2, 'Transaction Processing. QuikWallet ID: '.$id, true);
-                              } else {
-                                  // success
-                                  $this->model_checkout_order->confirm($order_id, 15, 'Payment Successful. QuikWallet Payment Id:'.$id, true);
+                            $status = strtolower($status);
+                            if ($status == "paid") {
 
-                                  echo '<html>'."\n";
-                                  echo '<head>'."\n";
-                                  echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/success').'">'."\n";
-                                  echo '</head>'."\n";
-                                  echo '<body>'."\n";
-                                  echo '  <p> Payment Successful. Please follow <a href="'.$this->url->link('checkout/success').'">link</a>!</p>'."\n";
-                                  echo '</body>'."\n";
-                                  echo '</html>'."\n";
-                                  exit();
+                                if ($order_info['order_status_id'] == 2) {  // Processing
+                                    // pending
+                                    $this->model_checkout_order->confirm($order_id, 2, 'Transaction Processing. QuikWallet ID: '.$id, true);
+                                } else {
+                                    // success
+                                    $this->model_checkout_order->confirm($order_id, 15, 'Payment Successful. QuikWallet Payment Id:'.$id, true);
 
-                              }
-                          } else {
-                              // failure
-                              $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
+                                    echo '<html>'."\n";
+                                    echo '<head>'."\n";
+                                    echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/success').'">'."\n";
+                                    echo '</head>'."\n";
+                                    echo '<body>'."\n";
+                                    echo '  <p> Payment Successful. Please follow <a href="'.$this->url->link('checkout/success').'">link</a>!</p>'."\n";
+                                    echo '</body>'."\n";
+                                    echo '</html>'."\n";
+                                    exit();
 
-                              echo '<html>'."\n";
-                              echo '<head>'."\n";
-                              echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
-                              echo '</head>'."\n";
-                              echo '<body>'."\n";
-                              echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
-                              echo '</body>'."\n";
-                              echo '</html>'."\n";
-                              exit();
-                          }
-                      }
-                  }
-                  catch (Exception $e) {
-                      // $errorOccurred = true;
-                      // failure
-                      $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
+                                }
+                            } else {
+                                // failure
+                                $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
 
-                      echo '<html>'."\n";
-                      echo '<head>'."\n";
-                      echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
-                      echo '</head>'."\n";
-                      echo '<body>'."\n";
-                      echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
-                      echo '</body>'."\n";
-                      echo '</html>'."\n";
-                      exit();
-                  }
-              }
+                                echo '<html>'."\n";
+                                echo '<head>'."\n";
+                                echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
+                                echo '</head>'."\n";
+                                echo '<body>'."\n";
+                                echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
+                                echo '</body>'."\n";
+                                echo '</html>'."\n";
+                                exit();
+                            }
+                        }
+                    }
+                    catch (Exception $e) {
+                        // $errorOccurred = true;
+                        // failure
+                        $this->model_checkout_order->confirm($order_id, 10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
 
-              //update the order table with id
-              //send mail
-          } else {
-              //print "Invalid response, please try again <hr>\n";
+                        echo '<html>'."\n";
+                        echo '<head>'."\n";
+                        echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
+                        echo '</head>'."\n";
+                        echo '<body>'."\n";
+                        echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
+                        echo '</body>'."\n";
+                        echo '</html>'."\n";
+                        exit();
+                    }
+                }
 
-              //wp_redirect(home_url());
-              exit();
-          }
+                //update the order table with id
+                //send mail
+            } else {
+                //print "Invalid response, please try again <hr>\n";
 
+                //wp_redirect(home_url());
+                exit();
+            }
 
-          exit();
-      }
+
+            exit();
+        }
 
 
     }
@@ -429,46 +429,46 @@ class ControllerPaymentQuikWallet extends Controller
         $end = '';
 
         switch ($value[0]) {
-            case 's':
-                if ($value[$length - 2] !== '"') {
-                    return false;
-                }
-            case 'b':
-            case 'i':
-            case 'd':
-                // This looks odd but it is quicker than isset()ing
-                $end .= ';';
-            case 'a':
-            case 'O':
-                $end .= '}';
+        case 's':
+            if ($value[$length - 2] !== '"') {
+                return false;
+            }
+        case 'b':
+        case 'i':
+        case 'd':
+            // This looks odd but it is quicker than isset()ing
+            $end .= ';';
+        case 'a':
+        case 'O':
+            $end .= '}';
 
-                if ($value[1] !== ':') {
-                    return false;
-                }
+            if ($value[1] !== ':') {
+                return false;
+            }
 
-                switch ($value[2]) {
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    break;
+            switch ($value[2]) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                break;
 
-                    default:
-                        return false;
-                }
+            default:
+                return false;
+            }
             case 'N':
                 $end .= ';';
 
                 if ($value[$length - 1] !== $end[0]) {
                     return false;
                 }
-            break;
+                break;
 
             default:
                 return false;

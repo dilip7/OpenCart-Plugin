@@ -7,6 +7,8 @@ $_['heading_title'] = 'QuikWallet';
 $_['text_payment'] = 'Payment';
 $_['text_edit'] = 'Edit QuikWallet';
 $_['text_success'] = 'Success: You have modified QuikWallet account details!';
+$_['text_quikwallet'] = '<a href="https://www.quikwallet.com" target="_blank"><img src="view/image/payment/quikwallet.png" alt="QuikWallet" title="QuikWallet" style="border: 1px solid #EEEEEE;" /></a>';
+
 
 // Entry
 $_['entry_quikwallet_partnerid'] = 'QuikWallet partnetid';

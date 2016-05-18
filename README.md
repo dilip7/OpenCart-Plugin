@@ -14,6 +14,18 @@ Make sure that you enable the extension in order for the QuikWallet to be shown 
 
 Remaining  fields like order status and sort order can be left as default values.
 
+
+### Sample values
+Configuration
+
+Example 
+
+url -  https://uat.quikpay.in/api/partner //API domain specified by QuikWallet for Test/Production
+partnerid - 75 //Unique id allotted to each merchant
+
+secret -  gA73CzmjhlqfGsJxP7s811ZVmnl70Jky  //256-bit key that to be stored securely
+
+
 ### Support
 
 For support requests or questions email us on support@livquik.com

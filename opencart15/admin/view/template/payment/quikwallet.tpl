@@ -41,20 +41,6 @@
                   </td>
                </tr>
                <tr>
-                  <td><?php echo $entry_order_status; ?></td>
-                  <td>
-                     <select name="quikwallet_order_status_id">
-                        <?php foreach ($order_statuses as $order_status) { ?>
-                        <?php if (($quikwallet_order_status_id and $order_status['order_status_id'] == $quikwallet_order_status_id) or $order_status['order_status_id'] == 2) { ?>
-                        <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-                        <?php } else { ?>
-                        <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-                        <?php } ?>
-                        <?php } ?>
-                     </select>
-                  </td>
-               </tr>
-               <tr>
                   <td><?php echo $entry_status; ?></td>
                   <td>
                      <select name="quikwallet_status">

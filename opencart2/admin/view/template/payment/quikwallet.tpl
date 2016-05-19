@@ -53,20 +53,6 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="input-order-status"><span data-toggle="tooltip" title="<?php echo $help_order_status; ?>"><?php echo $entry_order_status; ?></span></label>
-            <div class="col-sm-10">
-              <select name="quikwallet_order_status_id" id="input-order-status" class="form-control">
-                <?php foreach ($order_statuses as $order_status) { ?>
-                  <?php if (($quikwallet_order_status_id and $order_status['order_status_id'] == $quikwallet_order_status_id) or $order_status['order_status_id'] == 2) { ?>
-                    <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-                  <?php } else { ?>
-                    <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-                  <?php } ?>
-                <?php } ?>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
             <label class="col-sm-2 control-label" for="quikwallet-status"><?php echo $entry_status; ?></label>
             <div class="col-sm-10">
               <select name="quikwallet_status" id="quikwallet-status" class="form-control">

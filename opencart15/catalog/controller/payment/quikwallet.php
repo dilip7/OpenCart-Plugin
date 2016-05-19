@@ -395,7 +395,6 @@ class ControllerPaymentQuikWallet extends Controller
                 //print "Invalid response, please try again <hr>\n";
 
                 //wp_redirect(home_url());
-              $this->model_checkout_order->confirm($order_id,10, 'Transaction ERROR.<br/>QuikWallet ID: ' . $id, true);
 
               echo '<html>'."\n";
               echo '<head>'."\n";

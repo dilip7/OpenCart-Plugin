@@ -347,7 +347,7 @@ class ControllerPaymentQuikWallet extends Controller
 
                                     echo '<html>'."\n";
                                     echo '<head>'."\n";
-                                    echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/success').'">'."\n";
+                                    echo '  <meta http-equiv="Refresh" content="3; url='.$this->url->link('checkout/success').'">'."\n";
                                     echo '</head>'."\n";
                                     echo '<body>'."\n";
                                     echo '  <p> Payment Successful. Please follow <a href="'.$this->url->link('checkout/success').'">link</a>!</p>'."\n";
@@ -362,10 +362,10 @@ class ControllerPaymentQuikWallet extends Controller
 
                                 echo '<html>'."\n";
                                 echo '<head>'."\n";
-                                echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
+                                echo '  <meta http-equiv="Refresh" content="3; url='.$this->url->link('checkout/checkout').'">'."\n";
                                 echo '</head>'."\n";
                                 echo '<body>'."\n";
-                                echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
+                                echo '  <p>Payment Failure.Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
                                 echo '</body>'."\n";
                                 echo '</html>'."\n";
                                 exit();
@@ -379,10 +379,10 @@ class ControllerPaymentQuikWallet extends Controller
 
                         echo '<html>'."\n";
                         echo '<head>'."\n";
-                        echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
+                        echo '  <meta http-equiv="Refresh" content="3; url='.$this->url->link('checkout/checkout').'">'."\n";
                         echo '</head>'."\n";
                         echo '<body>'."\n";
-                        echo '  <p>Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
+                        echo '  <p>Payment Failure. Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
                         echo '</body>'."\n";
                         echo '</html>'."\n";
                         exit();
@@ -398,7 +398,7 @@ class ControllerPaymentQuikWallet extends Controller
 
               echo '<html>'."\n";
               echo '<head>'."\n";
-              echo '  <meta http-equiv="Refresh" content="0; url='.$this->url->link('checkout/checkout').'">'."\n";
+              echo '  <meta http-equiv="Refresh" content="3; url='.$this->url->link('checkout/checkout').'">'."\n";
               echo '</head>'."\n";
               echo '<body>'."\n";
               echo '  <p>Payment failed, Invalid Authentication. Please follow <a href="'.$this->url->link('checkout/checkout').'">link</a>!</p>'."\n";
